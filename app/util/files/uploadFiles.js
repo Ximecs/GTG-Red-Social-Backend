@@ -9,12 +9,12 @@ cloudinary.config({
   api_secret: API_SECRET,
 });
 
-let uploadFromBuffer = (file) => {
+let uploadFromBuffer = (file,folder) => {
   console.log(file);
   return new Promise((resolve, reject) => {
     let cld_upload_stream = cloudinary.v2.uploader.upload_stream(
       {
-        folder: "photoProfiles",
+        folder
       },
       (error, result) => {
         if (result) {
@@ -28,5 +28,7 @@ let uploadFromBuffer = (file) => {
     streamifier.createReadStream(file.buffer).pipe(cld_upload_stream);
   });
 };
+
+
 
 module.exports = uploadFromBuffer;

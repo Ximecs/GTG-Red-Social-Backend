@@ -2,9 +2,10 @@ const uploadFromBuffer = require("../util/files/uploadFiles");
 const Profile = require("../models/profiles.model");
 
 const updatePhotoProfile = async (req, res) => {
-  console.log(req.file);
+  // console.log(req.file);
   try {
-    const resultUploadPhoto = await uploadFromBuffer(req.file);
+    
+    const resultUploadPhoto = await uploadFromBuffer(req.file,'photoProfiles');
 
     if (!resultUploadPhoto) {
       return res.status(400).json({

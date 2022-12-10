@@ -17,7 +17,11 @@ const profileSchema = new Schema({
   photoProfile: {
     type: String,
   },
-});
+},
+{
+  timestamps: true,
+}
+);
 
 const profiles = mongoose.model("Profile", profileSchema);
 
