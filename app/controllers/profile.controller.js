@@ -1,5 +1,6 @@
 const uploadFromBuffer = require("../util/files/uploadFiles");
 const Profile = require("../models/profiles.model");
+const Account = require('../models/accounts.model')
 
 const updatePhotoProfile = async (req, res) => {
   // console.log(req.file);
@@ -62,4 +63,25 @@ const getProfile = async (req, res) => {
   }
 };
 
-module.exports = { updatePhotoProfile, getProfile };
+const searchProfile = async (req,res)=>{
+try{
+  let name = req.body.fullName
+  const profile = await Account.find({fullName:{$regex: '.*' + name + '.*'} })
+  if (!profile) {
+    return res.status(404).json({
+      ok: false,
+      message: "Perfil no encontrado",
+    });
+  }
+  res.status(200).json({
+    ok: true,
+    data: profile,
+  });
+}catch (error) {
+  res.status(400).json({
+    ok: false,
+    message: error,
+  });
+}
+}
+module.exports = { updatePhotoProfile, getProfile,searchProfile };

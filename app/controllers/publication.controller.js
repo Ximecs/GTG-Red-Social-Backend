@@ -1,7 +1,7 @@
 const uploadFromBuffer = require('../util/files/uploadFiles')
-const publications = require('../models/publications.model')
+const Publications = require('../models/publications.model')
 const { get } = require('../routes/auth.route')
-
+const Counter = require('../models/counter.model')
 
 
 const newPost = async (req, res) => {
@@ -10,6 +10,7 @@ const newPost = async (req, res) => {
     let publicationText = ''
 
     try {
+
         if (req.file) {
             publicationPicture = await uploadFromBuffer(req.file, 'photoPublications');
 
@@ -20,30 +21,36 @@ const newPost = async (req, res) => {
                 });
             }
         }
-        if (req.body.text) {
-            publicationText = req.body.text
-        }
+        
+           let publicationText = req.body.text
+           let transport = req.body.transport
+           let publicationTitle = req.body.publicationTitle
+        
 
-        await publications.create({
+        await Publications.create({
             idAccount: req.user.id,
             publiPicture: publicationPicture,
             publicationText,
+            transport,
+            publicationTitle,
         })
         res.status(200).json({
             ok: true,
+            message: "working"
         });
 
 
-    } catch (error) {
-        res.status(400).jason({
+    } catch (err) {
+        res.status(400).json({
             ok: false,
+            error: err.message
         })
     }
 };
 
 const getPublication = async (req, res) => {
     try {
-        const publications = await publications.find().toArray();
+        const publications = await Publications.find({}).sort({createdAt:-1});
 
         if (!publications) {
             return res.status(404).json({
@@ -52,16 +59,23 @@ const getPublication = async (req, res) => {
         }
 
         res.status(200).json({
-            ok:true,
-            data:publications,
+            ok: true,
+            data: publications,
         })
-    
-    
-    } catch {
+
+
+    } catch (err) {
         res.status(400).json({
-            ok: false
+            ok: false,
+            error: err.message
         })
     }
+};
+const counterFn = async (counterName) => {
+    let contador = await Counter.findOne({ id: counterName });
+    newValue = contador.seq_value + 1;
+    await Counter.findOneAndUpdate({ id: counterName }, { seq_value: newValue });
+    return contador.seq_value;
 };
 
 const getPublicationByUser = async (req, res) => {

@@ -6,11 +6,10 @@ const publicationsSchema = new Schema({
         type: Schema.ObjectId,
         ref: "Account",
         required: true,
-        unique: true,
     },
     publiDate: {
         type: String,
-        required: true,
+
     },
     publiPicture:{
         type:String,
@@ -21,7 +20,7 @@ const publicationsSchema = new Schema({
      required: true,
 
     },
-    trasport:{
+    transport:{
         type:String,
       required: true,
       details:{
@@ -45,7 +44,12 @@ const publicationsSchema = new Schema({
     publiText:{
         type:String,
     }
+    
 
-});
+},
+{
+    timestamps: true,
+  }
+);
 const publications = mongoose.model("Publications",publicationsSchema)
 module.exports = publications
