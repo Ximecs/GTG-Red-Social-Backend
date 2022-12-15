@@ -5,13 +5,13 @@ const Account = require('../models/accounts.model')
 const updatePhotoProfile = async (req, res) => {
   // console.log(req.file);
   try {
-    
-    const resultUploadPhoto = await uploadFromBuffer(req.file,'photoProfiles');
+
+    const resultUploadPhoto = await uploadFromBuffer(req.file, 'photoProfiles');
 
     if (!resultUploadPhoto) {
       return res.status(400).json({
         ok: false,
-        message: "No se pudo obtener url de la photo",
+        message: "No se pudo obtener url de la foto",
       });
     }
 
@@ -27,7 +27,7 @@ const updatePhotoProfile = async (req, res) => {
         idAccount: req.user.id,
         photoProfile: resultUploadPhoto.url,
       });
-    }
+    };
 
     res.status(200).json({
       ok: true,
@@ -63,25 +63,25 @@ const getProfile = async (req, res) => {
   }
 };
 
-const searchProfile = async (req,res)=>{
-try{
-  let name = req.body.fullName
-  const profile = await Account.find({fullName:{$regex: '.*' + name + '.*'} })
-  if (!profile) {
-    return res.status(404).json({
+const searchProfile = async (req, res) => {
+  try {
+    let name = req.body.fullName
+    const profile = await Account.find({ fullName: { $regex: '.*' + name + '.*' } })
+    if (!profile) {
+      return res.status(404).json({
+        ok: false,
+        message: "Perfil no encontrado",
+      });
+    }
+    res.status(200).json({
+      ok: true,
+      data: profile,
+    });
+  } catch (error) {
+    res.status(400).json({
       ok: false,
-      message: "Perfil no encontrado",
+      message: error,
     });
   }
-  res.status(200).json({
-    ok: true,
-    data: profile,
-  });
-}catch (error) {
-  res.status(400).json({
-    ok: false,
-    message: error,
-  });
 }
-}
-module.exports = { updatePhotoProfile, getProfile,searchProfile };
+module.exports = { updatePhotoProfile, getProfile, searchProfile };
