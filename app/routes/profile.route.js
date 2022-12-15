@@ -3,7 +3,8 @@ const {
   updatePhotoProfile,
   getProfile,
   searchProfile,
-  updatePhotoBanner,
+  getProfileByUser,
+
 } = require("../controllers/profile.controller");
 const router = express.Router();
 const multer = require("multer");
@@ -17,8 +18,10 @@ router.post(
   upload.single("photo"),
   updatePhotoProfile
 );
-router.get("/getProfile", getProfile);
-router.get('/searchProfile',authValidation,searchProfile)
-router.post("/updatePhotoBanner",authValidation,upload.single("photo"),updatePhotoBanner);
+router.get("/getProfile",authValidation, getProfile);
+router.get('/searchProfile',authValidation,searchProfile);
+router.post("/getProfileByUser", getProfileByUser);
+
+
 
 module.exports = router;

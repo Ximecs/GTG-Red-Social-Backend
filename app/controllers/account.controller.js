@@ -30,7 +30,7 @@ const newAccount = async (req, res) => {
 };
 
 
-const googleAccount = async (req,res)=>{
+const googleAccount = async (req,res,next)=>{
 
   try{
 
