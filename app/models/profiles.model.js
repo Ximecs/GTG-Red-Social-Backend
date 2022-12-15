@@ -17,6 +17,9 @@ const profileSchema = new Schema({
   photoProfile: {
     type: String,
   },
+  bannerPhoto:{
+    type:String,
+  }
 },
 {
   timestamps: true,
