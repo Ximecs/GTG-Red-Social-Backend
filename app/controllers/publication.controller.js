@@ -12,8 +12,10 @@ const newPost = async (req, res) => {
     let publicationText = ''
 
     try {
-
+        console.log(req.file)
+          
         if (req.file) {
+
             publicationPicture = await uploadFromBuffer(req.file, 'photoPublications');
 
             if (!publicationPicture) {
@@ -23,15 +25,10 @@ const newPost = async (req, res) => {
                 });
             }
         }
-
-
-
         let transport = req.body.transport
         let publicationTitle = req.body.publicationTitle
         let ciudad = req.body.ciudad
         let presupuesto = req.body.presupuesto
-
-
 
 
         await Publications.create({
