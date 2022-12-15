@@ -39,6 +39,44 @@ const updatePhotoProfile = async (req, res) => {
     });
   }
 };
+const updatePhotoBanner = async (req, res) => {
+  // console.log(req.file);
+  try {
+    
+    const resultUploadPhoto = await uploadFromBuffer(req.file,'photoBanner');
+
+    if (!resultUploadPhoto) {
+      return res.status(400).json({
+        ok: false,
+        message: "No se pudo obtener url de la photo",
+      });
+    }
+
+    const photoUpdated = await Profile.findOneAndUpdate(
+      { idAccount: req.user.id },
+      {
+        photoBanner: resultUploadPhoto.url,
+      }
+    );
+
+    if (!photoUpdated) {
+      await Profile.create({
+        idAccount: req.user.id,
+        photoBanner: resultUploadPhoto.url,
+      });
+    }
+
+    res.status(200).json({
+      ok: true,
+    });
+  } catch (error) {
+    res.status(400).json({
+      ok: false,
+      message: error,
+    });
+  }
+};
+
 
 const getProfile = async (req, res) => {
   try {
@@ -84,4 +122,4 @@ try{
   });
 }
 }
-module.exports = { updatePhotoProfile, getProfile,searchProfile };
+module.exports = { updatePhotoProfile, getProfile,searchProfile,updatePhotoBanner };

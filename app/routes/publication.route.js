@@ -5,6 +5,8 @@ const { authValidation } = require("../util/middlewares/authValidation");
 
 router.post('/newPost',authValidation,newPost)
 router.get("/getPublication", authValidation,getPublication);
+router.post("/getPublicationByUser",getPublicationByUser);
+
 
   
   module.exports = router;
